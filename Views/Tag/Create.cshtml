@@ -1,0 +1,20 @@
+﻿@using NoticiasApp.ViewModel
+@model TagViewModel
+
+@{
+    ViewData["Title"] = "Criar Tag";
+}
+
+<h2>Criar Tag</h2>
+
+<form asp-action="Create">
+    <div class="form-group">
+        <label asp-for="Descricao" class="control-label"></label>
+        <input asp-for="Descricao" class="form-control" />
+        <span asp-validation-for="Descricao" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </div>
+</form>

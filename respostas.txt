@@ -1,0 +1,26 @@
+1) Qual fluxo os dados de um formulário em uma View deve percorrer até ser armazenado na fonte de dados em um projeto DDD?
+
+Em um projeto utilizando Domain-Driven Design (DDD), o fluxo dos dados de um formulário em uma View até serem armazenados na fonte de dados segue os seguintes passos:
+1. View (UI Layer): O usuário preenche o formulário e envia os dados.
+2. Controller (Application Layer): O controlador recebe a submissão do formulário, valida os dados e invoca os serviços necessários.
+3. Application Service (Application Layer): O serviço de aplicação coordena a operação, validando dados adicionais e transformando-os em comandos ou entidades de domínio.
+4. Domain Layer: O serviço de aplicação interage com o domínio chamando métodos de agregados ou outras entidades de domínio, onde as regras de negócio são aplicadas.
+5. Domain Services/Repositories (Domain Layer): O serviço de domínio pode chamar repositórios para persistir ou recuperar dados. O repositório encapsula a lógica de acesso aos dados.
+6. Infrastructure Layer: O repositório utiliza a camada de infraestrutura para interagir com a base de dados, executando as operações de persistência.
+7. Database: Os dados são finalmente armazenados na fonte de dados.
+
+2) Nossa aplicação necessita que um usuário esteja autenticado para poder navegar nas funcionalidades, em .net, como podemos desenvolver essa autenticação?
+
+Em uma aplicação ASP.NET, a autenticação pode ser desenvolvida utilizando ASP.NET Identity. A configuração dos serviços de autenticação e identidade é feita no método ConfigureServices do Startup.cs. No método Configure, o middleware de autenticação é configurado. Adicione o atributo [Authorize] nos controladores ou ações que requerem autenticação e implemente páginas de login e registro utilizando o Identity.
+
+3) Estamos enfrentando problemas de performance na página inicial de um portal que tem muitos acessos. Essa página exibe eventos separados em 6 sessões do HTML, filtrados, cada sessão, por uma regra de negócio. Trata-se de um projeto MVC, no qual são realizadas 6 consultas via ORM para carregar a View que será processada no servidor e disponibilizada ao browser. O que podemos fazer para tentar mitigar esse problema de performance?
+
+Para mitigar o problema de performance, podemos adotar várias estratégias:
+1. Reduzir o número de consultas ao banco de dados, realizando uma única consulta que traga todos os dados necessários e filtrando os dados em memória.
+2. Cache: Utilizar caching para armazenar os resultados das consultas que não mudam frequentemente.  
+3. Asynchronous Programming: Utilizar consultas assíncronas para não bloquear a thread principal do servidor.
+4. Load Balancing: Escalar horizontalmente a aplicação utilizando um load balancer para distribuir as requisições entre múltiplos servidores.
+5. Indexes: Certificar-se de que as colunas usadas nos filtros possuem índices no banco de dados.
+6. Paged Loading: Utilizar paginação para carregar apenas uma parte dos dados por vez.
+
+No cenário citado, cache é o melhor, pois, por ser uma página muito utilizada e com pouca variação de informação, o cache atende a necessidade. Redis por ex

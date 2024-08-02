@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Noticia>
+
+@{
+    ViewData["Title"] = "Notícias";
+}
+
+<h2>Notícias</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var noticia in Model)
+        {
+            <tr>
+                <td>@noticia.Titulo</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@noticia.Id" class="btn btn-primary">Editar</a>
+                    <a asp-action="Delete" asp-route-id="@noticia.Id" class="btn btn-danger">Excluir</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Create" class="btn btn-success">Adicionar Notícia</a>

@@ -1,0 +1,66 @@
+﻿@using NoticiasApp.ViewModel
+@model NoticiaEditViewModel
+
+@{
+    ViewData["Title"] = "Editar Notícia";
+    var options = new System.Text.StringBuilder();
+    foreach (var tag in (IEnumerable<SelectListItem>)ViewBag.Tags)
+    {
+        var selected = Model.SelectedTags.Contains(int.Parse(tag.Value)) ? "selected" : "";
+        options.AppendFormat("<option value=\"{0}\" {1}>{2}</option>", tag.Value, selected, tag.Text);
+    }
+}
+
+<h2>Editar Notícia</h2>
+
+<form id="noticia-form" asp-action="Edit">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label asp-for="Titulo" class="control-label"></label>
+        <input asp-for="Titulo" class="form-control" />
+        <span asp-validation-for="Titulo" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Texto" class="control-label"></label>
+        <textarea asp-for="Texto" class="form-control"></textarea>
+        <span asp-validation-for="Texto" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="UsuarioId" class="control-label"></label>
+        <select asp-for="UsuarioId" class="form-control" asp-items="ViewBag.UsuarioId"></select>
+        <span asp-validation-for="UsuarioId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="tags">Tags</label>
+        <select id="tags" asp-for="SelectedTags" class="form-control" multiple>
+            @Html.Raw(options.ToString())
+        </select>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </div>
+</form>
+
+@section Scripts {
+    <script src="~/js/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#noticia-form').on('submit', function (e) {
+                e.preventDefault();
+                var selectedTags = $('#tags').val();
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: $(this).serialize() + '&selectedTags=' + selectedTags.join(','),
+                    success: function (result) {
+                        window.location.href = '@Url.Action("Index")';
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Ocorreu um erro: ' + error);
+                    }
+                });
+            });
+        });
+    </script>
+}

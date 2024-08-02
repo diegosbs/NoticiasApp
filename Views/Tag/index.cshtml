@@ -1,0 +1,30 @@
+﻿@model IEnumerable<NoticiasApp.Models.Tag>
+
+@{
+    ViewData["Title"] = "Tags";
+}
+
+<h2>Tags</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Descrição</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var tag in Model)
+        {
+            <tr>
+                <td>@tag.Descricao</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@tag.Id" class="btn btn-primary">Editar</a>
+                    <a asp-action="Delete" asp-route-id="@tag.Id" class="btn btn-danger">Excluir</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Create" class="btn btn-success">Adicionar Tag</a>
